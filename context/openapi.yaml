@@ -1,0 +1,66 @@
+openapi: 3.0.9
+info:
+  title: openapi sample
+  description: openapi sample
+  version: 1.0.0
+servers:
+  - url: http://{host}:{port}
+    description: sample api server
+    variables:
+      host:
+        enum:
+          - localhost
+          - 127.0.0.1
+        default: localhost
+      port:
+        enum:
+          - '8003'
+        default: '8003'
+paths:
+  /user/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+    get:
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: not found
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        204:
+          description: updated
+        400:
+          description: bad request
+        404:
+          description: not found
+components:
+  schemas:
+    Id:
+      type: string
+      pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      example: 2bbd63b2-4357-44a6-b106-c651b6cae192
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 128
+          example: johndoe
+        age:
+          type: integer
+          maxLength: 3
+          example: 100

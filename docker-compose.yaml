@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  swagger_editor:
+    container_name: swagger-editor
+    image: swaggerapi/swagger-editor
+    ports:
+      - 8001:8080
+    networks:
+      openapi_network:
+
+  swagger_ui:
+    container_name: swagger-ui
+    image: swaggerapi/swagger-ui
+    ports:
+      - 8002:8080
+    volumes:
+      - ./context/openapi.yaml:/openapi.yaml
+    environment:
+      SWAGGER_JSON: /openapi.yaml
+    networks:
+      openapi_network:
+
+  swagger_api:
+    container_name: swagger-api
+    image: stoplight/prism:3
+    ports:
+      - 8003:4010
+    command: mock -h 0.0.0.0 /openapi.yaml
+    volumes:
+      - ./context/openapi.yaml:/openapi.yaml
+    networks:
+      openapi_network:
+
+networks:
+  openapi_network:
+    name: openapi-network
