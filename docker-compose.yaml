@@ -32,6 +32,18 @@ services:
     networks:
       openapi_network:
 
+  # openapi_generator_server:
+  #   container_name: openapi-generator-server
+  #   image: openapitools/openapi-generator-cli
+  #   environment:
+  #     - GENERATOR_NAME
+  #   volumes:
+  #     - ./data/openapi-gen:/local
+  #     - ./context/openapi.yaml:/local/openapi.yaml
+  #   command: generate -g ${GENERATOR_NAME} -i /local/openapi.yaml -o /local/server
+  #   networks:
+  #     openapi_network:
+
 networks:
   openapi_network:
     name: openapi-network
