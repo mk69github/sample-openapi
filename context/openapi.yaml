@@ -16,8 +16,10 @@ servers:
         enum:
           - '8003'
         default: '8003'
+security:
+  - Bearer: []
 paths:
-  /user/{id}:
+  /users/{id}:
     parameters:
       - name: id
         in: path
@@ -25,6 +27,8 @@ paths:
         schema:
           $ref: '#/components/schemas/Id'
     get:
+      tags:
+        - users
       responses:
         200:
           description: ok
@@ -35,6 +39,8 @@ paths:
         404:
           description: not found
     put:
+      tags:
+        - users
       requestBody:
         content:
           application/json:
@@ -48,10 +54,15 @@ paths:
         404:
           description: not found
 components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Id:
       type: string
-      pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      format: uuid
       example: 2bbd63b2-4357-44a6-b106-c651b6cae192
     User:
       type: object
@@ -64,3 +75,6 @@ components:
           type: integer
           maxLength: 3
           example: 100
+tags:
+  - name: users
+    description: users resource api
